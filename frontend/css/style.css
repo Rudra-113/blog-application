@@ -34,7 +34,6 @@ img {
   display: block;
 }
 
-
 /* ===========================
    Navigation Bar
 =========================== */
@@ -75,9 +74,7 @@ img {
   display: block;
   padding: 8px 14px;
   border-radius: 6px;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
   font-size: 0.95rem;
 }
 
@@ -104,7 +101,6 @@ img {
   border-radius: 2px;
 }
 
-
 /* ===========================
    Layout Helpers
 =========================== */
@@ -129,7 +125,6 @@ img {
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.07);
   margin-bottom: 20px;
 }
-
 
 /* ===========================
    Buttons
@@ -175,7 +170,6 @@ img {
   width: 100%;
 }
 
-
 /* ===========================
    Hero Section
 =========================== */
@@ -200,7 +194,6 @@ img {
   margin-bottom: 24px;
   opacity: 0.9;
 }
-
 
 /* ===========================
    Blog Post Cards
@@ -245,7 +238,6 @@ img {
   padding: 40px 20px;
   color: #888;
 }
-
 
 /* ===========================
    Forms
@@ -311,7 +303,6 @@ img {
   font-weight: 600;
 }
 
-
 /* ===========================
    Alerts
 =========================== */
@@ -333,7 +324,6 @@ img {
   background-color: #fde2e4;
   color: #a4133c;
 }
-
 
 /* ===========================
    Dashboard
@@ -397,7 +387,6 @@ img {
   color: #fff;
 }
 
-
 /* ===========================
    Profile
 =========================== */
@@ -420,7 +409,6 @@ img {
   word-break: break-word;
 }
 
-
 /* ===========================
    Blog Details
 =========================== */
@@ -436,7 +424,6 @@ img {
   color: #444;
 }
 
-
 /* ===========================
    Footer
 =========================== */
@@ -449,13 +436,11 @@ img {
   margin-top: auto;
 }
 
-
 /* ===========================
    Responsive - Tablet
 =========================== */
 
 @media (max-width: 900px) {
-
   .nav-links li a {
     padding: 8px 10px;
     font-size: 0.9rem;
@@ -468,16 +453,13 @@ img {
   .hero {
     padding: 55px 20px;
   }
-
 }
-
 
 /* ===========================
    Responsive - Mobile
 =========================== */
 
 @media (max-width: 700px) {
-
   .navbar {
     padding: 0 15px;
   }
@@ -576,16 +558,13 @@ img {
   .footer {
     padding: 20px 14px;
   }
-
 }
-
 
 /* ===========================
    Small Mobile
 =========================== */
 
 @media (max-width: 400px) {
-
   .nav-logo {
     font-size: 1.2rem;
   }
@@ -610,5 +589,4 @@ img {
   .blog-actions .delete-btn {
     width: 100%;
   }
-
 }
