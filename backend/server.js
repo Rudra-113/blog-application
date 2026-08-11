@@ -1,27 +1,46 @@
 // server.js
-// Main entry point of the backend application
-
 require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
-// Route files
 const authRoutes = require("./routes/authRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 
 const app = express();
 
+// ----- CORS -----
+
+const allowedOrigins = [
+  "http://localhost:8000",
+  "https://simpleblog-frontend.onrender.com"
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests without an origin
+      // such as curl or server-to-server requests
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true
+  })
+);
+
 // ----- Middleware -----
 
-// Allows frontend and backend to communicate
-app.use(cors());
-
-// Allows server to read JSON request bodies
 app.use(express.json());
 
-// ----- Connect to MongoDB -----
+// ----- Database -----
 
 connectDB();
 
