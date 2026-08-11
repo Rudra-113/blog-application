@@ -3,7 +3,7 @@
    Shared helpers for the backend-connected Blog App.
 ===================================================== */
 
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://blog-application-backend-hbcg.onrender.com/api';
 
 function getToken() {
   return localStorage.getItem('blogapp_token');
