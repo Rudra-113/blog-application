@@ -9,10 +9,13 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   try {
     const data = await apiRequest('/blogs');
-    const posts = Array.isArray(data) ? data : (data.blogs || data.posts || []);
+    const posts = Array.isArray(data)
+      ? data
+      : (data.blogs || data.posts || []);
 
     if (posts.length === 0) {
-      grid.innerHTML = '<p class="empty-state">No blog posts yet. Register and be the first to write one!</p>';
+      grid.innerHTML =
+        '<p class="empty-state">No blog posts yet. Register and be the first to write one!</p>';
       return;
     }
 
@@ -21,20 +24,42 @@ document.addEventListener('DOMContentLoaded', async function () {
       card.className = 'card post-card';
 
       const title = escapeHtml(post.title || 'Untitled');
-      const authorValue = post.author?.name || post.author?.email || 'User';
+      const authorValue =
+        post.author?.name || post.author?.email || 'User';
+
       const content = escapeHtml(post.content || '');
+
       const date = post.createdAt
         ? new Date(post.createdAt).toLocaleDateString()
         : (post.date || '');
 
       card.innerHTML =
         '<h3>' + title + '</h3>' +
-        '<p class="post-meta">By ' + escapeHtml(authorValue) + ' &middot; ' + escapeHtml(date) + '</p>' +
-        '<p class="post-excerpt">' + content.slice(0, 120) + (content.length > 120 ? '...' : '') + '</p>';
+        '<p class="post-meta">By ' +
+        escapeHtml(authorValue) +
+        ' &middot; ' +
+        escapeHtml(date) +
+        '</p>' +
+        '<p class="post-excerpt">' +
+        content.slice(0, 120) +
+        (content.length > 120 ? '...' : '') +
+        '</p>' +
+        '<a href="blog-details.html?id=' +
+        encodeURIComponent(post._id) +
+        '" class="btn">Read More</a>';
 
       grid.appendChild(card);
     });
   } catch (error) {
-    grid.innerHTML = '<p class="empty-state">' + escapeHtml(error.message) + '</p>';
+    grid.innerHTML =
+      '<p class="empty-state">' +
+      escapeHtml(error.message) +
+      '</p>';
   }
 });
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}

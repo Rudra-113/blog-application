@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Details | Simple Blog</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+
+      <a href="index.html" class="nav-logo">SimpleBlog</a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li id="navLogin"><a href="login.html">Login</a></li>
+        <li id="navRegister"><a href="register.html">Register</a></li>
+        <li id="navDashboard"><a href="dashboard.html">Dashboard</a></li>
+        <li id="navCreate"><a href="create-blog.html">Create Blog</a></li>
+        <li id="navLogout"><a href="#">Logout</a></li>
+      </ul>
+
+    </div>
+  </nav>
+
+  <!-- Blog Details -->
+  <main class="container">
+
+    <div class="card">
+
+      <h1 id="blogTitle">Loading...</h1>
+
+      <p id="blogAuthor"></p>
+
+      <p id="blogDate"></p>
+
+      <hr>
+
+      <div id="blogContent">
+        Loading blog content...
+      </div>
+
+      <br>
+
+      <a href="index.html" class="btn">← Back to Blogs</a>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 SimpleBlog. Built for learning purposes.</p>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/blog-details.js"></script>
+
+</body>
+</html>

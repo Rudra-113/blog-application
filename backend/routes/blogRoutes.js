@@ -3,10 +3,17 @@
 
 const express = require("express");
 const router = express.Router();
-const { createBlog, getBlogs } = require("../controllers/blogController");
+
+const {
+  createBlog,
+  getBlogs,
+  getBlogById,
+} = require("../controllers/blogController");
+
 const protect = require("../middleware/authMiddleware");
 
-router.post("/", protect, createBlog); // must be logged in to create a blog
-router.get("/", getBlogs); // anyone can view all blogs
+router.post("/", protect, createBlog);
+router.get("/", getBlogs);
+router.get("/:id", getBlogById);
 
 module.exports = router;

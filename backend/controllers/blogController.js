@@ -9,13 +9,15 @@ const createBlog = async (req, res) => {
     const { title, content } = req.body;
 
     if (!title || !content) {
-      return res.status(400).json({ message: "Title and content are required." });
+      return res.status(400).json({
+        message: "Title and content are required.",
+      });
     }
 
     const blog = await Blog.create({
       title,
       content,
-      author: req.user.id, // comes from the JWT token (set in authMiddleware)
+      author: req.user.id,
     });
 
     res.status(201).json({
@@ -23,7 +25,10 @@ const createBlog = async (req, res) => {
       blog,
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
@@ -31,13 +36,41 @@ const createBlog = async (req, res) => {
 const getBlogs = async (req, res) => {
   try {
     const blogs = await Blog.find()
-      .populate("author", "name email") // show author's name/email instead of just their ID
-      .sort({ createdAt: -1 }); // newest blogs first
+      .populate("author", "name email")
+      .sort({ createdAt: -1 });
 
     res.status(200).json(blogs);
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
 
-module.exports = { createBlog, getBlogs };
+// @route   GET /api/blogs/:id   (public - view one blog)
+const getBlogById = async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id)
+      .populate("author", "name email");
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+      });
+    }
+
+    res.status(200).json(blog);
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  createBlog,
+  getBlogs,
+  getBlogById,
+};
