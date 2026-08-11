@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Blog | Simple Blog</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-protected="true">
+
+  <!-- ===== Navigation Bar ===== -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">SimpleBlog</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li id="navLogin"><a href="login.html">Login</a></li>
+        <li id="navRegister"><a href="register.html">Register</a></li>
+        <li id="navDashboard"><a href="dashboard.html">Dashboard</a></li>
+        <li id="navCreate"><a href="create-blog.html">Create Blog</a></li>
+        <li id="navLogout"><a href="#">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== Page Content ===== -->
+  <main class="container">
+    <div class="card form-card">
+      <h2 class="page-title">Create a New Blog Post</h2>
+
+      <div class="alert" id="createBlogAlert"></div>
+
+      <form id="createBlogForm" novalidate>
+        <div class="form-group">
+          <label for="blogTitle">Title</label>
+          <input type="text" id="blogTitle" placeholder="Enter blog title">
+          <span class="error-text" id="blogTitleError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="blogContent">Content</label>
+          <textarea id="blogContent" rows="8" placeholder="Write your blog post here..."></textarea>
+          <span class="error-text" id="blogContentError"></span>
+        </div>
+
+        <button type="submit" class="btn btn-block">Publish Post</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SimpleBlog. Built for learning purposes.</p>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/blog.js"></script>
+</body>
+</html>
