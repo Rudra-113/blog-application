@@ -54,6 +54,27 @@ const getBlogs = async (req, res) => {
 };
 
 
+// @route   GET /api/blogs/my
+// @desc    Get only the logged-in user's blogs
+// @access  Protected
+const getMyBlogs = async (req, res) => {
+  try {
+    const blogs = await Blog.find({
+      author: req.user.id,
+    })
+      .populate("author", "name email")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(blogs);
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+
 // @route   GET /api/blogs/:id
 // @desc    Get one blog
 // @access  Public
@@ -85,7 +106,6 @@ const updateBlog = async (req, res) => {
   try {
     const { title, content } = req.body;
 
-    // Find the blog
     const blog = await Blog.findById(req.params.id);
 
     if (!blog) {
@@ -94,21 +114,18 @@ const updateBlog = async (req, res) => {
       });
     }
 
-    // Only the blog owner can update it
     if (String(blog.author) !== String(req.user.id)) {
       return res.status(403).json({
         message: "You can only update your own blogs.",
       });
     }
 
-    // Validate input
     if (!title || !content) {
       return res.status(400).json({
         message: "Title and content are required.",
       });
     }
 
-    // Update blog
     blog.title = title;
     blog.content = content;
 
@@ -118,7 +135,6 @@ const updateBlog = async (req, res) => {
       message: "Blog updated successfully",
       blog,
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server error",
@@ -133,7 +149,6 @@ const updateBlog = async (req, res) => {
 // @access  Protected
 const deleteBlog = async (req, res) => {
   try {
-    // Find the blog
     const blog = await Blog.findById(req.params.id);
 
     if (!blog) {
@@ -142,20 +157,17 @@ const deleteBlog = async (req, res) => {
       });
     }
 
-    // Only the blog owner can delete it
     if (String(blog.author) !== String(req.user.id)) {
       return res.status(403).json({
         message: "You can only delete your own blogs.",
       });
     }
 
-    // Delete blog
     await Blog.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
       message: "Blog deleted successfully",
     });
-
   } catch (error) {
     res.status(500).json({
       message: "Server error",
@@ -168,6 +180,7 @@ const deleteBlog = async (req, res) => {
 module.exports = {
   createBlog,
   getBlogs,
+  getMyBlogs,
   getBlogById,
   updateBlog,
   deleteBlog,

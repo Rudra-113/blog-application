@@ -13,15 +13,18 @@ document.addEventListener('DOMContentLoaded', async function () {
   const dashboardName = document.getElementById('dashboardUserName');
   const postList = document.getElementById('dashboardPostList');
 
+  // Display logged-in user's name
   if (dashboardName) {
     dashboardName.textContent =
       currentUser?.name || currentUser?.email || 'User';
   }
 
+  // Load only the logged-in user's blogs
   if (postList) {
     await renderDashboardPosts(postList);
   }
 
+  // Create Blog Form
   const createForm = document.getElementById('createBlogForm');
 
   if (createForm) {
@@ -30,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       const title = document.getElementById('blogTitle').value.trim();
       const content = document.getElementById('blogContent').value.trim();
+
       let isValid = true;
 
       if (!title) {
@@ -54,7 +58,10 @@ document.addEventListener('DOMContentLoaded', async function () {
       try {
         await apiRequest('/blogs', {
           method: 'POST',
-          body: JSON.stringify({ title, content })
+          body: JSON.stringify({
+            title,
+            content
+          })
         });
 
         showAlert(
@@ -70,19 +77,30 @@ document.addEventListener('DOMContentLoaded', async function () {
         }, 800);
 
       } catch (error) {
-        showAlert('createBlogAlert', error.message, 'error');
+        showAlert(
+          'createBlogAlert',
+          error.message,
+          'error'
+        );
       }
     });
   }
 });
 
 
+/* =====================================================
+   Dashboard
+   Loads ONLY blogs belonging to the logged-in user.
+===================================================== */
+
 async function renderDashboardPosts(postList) {
   postList.innerHTML =
     '<p class="empty-state">Loading your posts...</p>';
 
   try {
-    const data = await apiRequest('/blogs');
+    // IMPORTANT:
+    // /blogs/my returns only the logged-in user's blogs
+    const data = await apiRequest('/blogs/my');
 
     const posts = Array.isArray(data)
       ? data
@@ -92,17 +110,25 @@ async function renderDashboardPosts(postList) {
 
     if (posts.length === 0) {
       postList.innerHTML =
-        '<p class="empty-state">No blog posts yet. Click "Create Blog" to write your first one!</p>';
+        '<p class="empty-state">' +
+        'No blog posts yet. Click "Create Blog" to write your first one!' +
+        '</p>';
+
       return;
     }
 
-    posts.slice().reverse().forEach(function (post) {
+    posts.forEach(function (post) {
 
       const row = document.createElement('div');
       row.className = 'dashboard-post';
 
-      const title = escapeHtml(post.title || 'Untitled');
-      const content = escapeHtml(post.content || '');
+      const title = escapeHtml(
+        post.title || 'Untitled'
+      );
+
+      const content = escapeHtml(
+        post.content || ''
+      );
 
       const date = post.createdAt
         ? new Date(post.createdAt).toLocaleDateString()
@@ -110,7 +136,10 @@ async function renderDashboardPosts(postList) {
 
       row.innerHTML =
         '<div>' +
-          '<h3>' + title + '</h3>' +
+
+          '<h3>' +
+            title +
+          '</h3>' +
 
           '<p class="post-meta">' +
             escapeHtml(date) +
@@ -123,18 +152,21 @@ async function renderDashboardPosts(postList) {
 
           '<div class="blog-actions">' +
 
+            // Read More
             '<a href="blog-details.html?id=' +
               encodeURIComponent(post._id) +
               '" class="btn">' +
               'Read More' +
             '</a>' +
 
+            // Edit
             '<a href="edit-blog.html?id=' +
               encodeURIComponent(post._id) +
               '" class="btn">' +
               'Edit' +
             '</a>' +
 
+            // Delete
             '<button class="btn delete-btn" data-id="' +
               escapeHtml(post._id) +
               '">' +
@@ -148,14 +180,20 @@ async function renderDashboardPosts(postList) {
       postList.appendChild(row);
     });
 
-    // Add Delete button functionality
-    const deleteButtons = postList.querySelectorAll('.delete-btn');
+
+    /* =================================================
+       Delete Blog
+    ================================================= */
+
+    const deleteButtons =
+      postList.querySelectorAll('.delete-btn');
 
     deleteButtons.forEach(function (button) {
 
       button.addEventListener('click', async function () {
 
-        const blogId = button.getAttribute('data-id');
+        const blogId =
+          button.getAttribute('data-id');
 
         const confirmed = confirm(
           'Are you sure you want to delete this blog?'
@@ -171,6 +209,7 @@ async function renderDashboardPosts(postList) {
 
           alert('Blog deleted successfully.');
 
+          // Reload user's blogs
           await renderDashboardPosts(postList);
 
         } catch (error) {
@@ -191,14 +230,25 @@ async function renderDashboardPosts(postList) {
 }
 
 
+/* =====================================================
+   Security helper
+===================================================== */
+
 function escapeHtml(text) {
   const div = document.createElement('div');
+
   div.textContent = text;
+
   return div.innerHTML;
 }
 
 
+/* =====================================================
+   Form Error Helpers
+===================================================== */
+
 function showError(id, message) {
+
   const el = document.getElementById(id);
 
   if (el) {
@@ -209,6 +259,7 @@ function showError(id, message) {
 
 
 function hideError(id) {
+
   const el = document.getElementById(id);
 
   if (el) {
@@ -217,7 +268,12 @@ function hideError(id) {
 }
 
 
+/* =====================================================
+   Alert Helper
+===================================================== */
+
 function showAlert(id, message, type) {
+
   const el = document.getElementById(id);
 
   if (el) {

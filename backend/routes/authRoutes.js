@@ -1,11 +1,21 @@
-// routes/authRoutes.js
-// Defines the URLs for authentication (register/login)
-
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser } = require("../controllers/authController");
 
+const {
+  registerUser,
+  loginUser,
+  getProfile,
+} = require("../controllers/authController");
+
+const protect = require("../middleware/authMiddleware");
+
+// Register
 router.post("/register", registerUser);
+
+// Login
 router.post("/login", loginUser);
+
+// Get logged-in user's profile
+router.get("/profile", protect, getProfile);
 
 module.exports = router;

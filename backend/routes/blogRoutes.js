@@ -7,6 +7,7 @@ const router = express.Router();
 const {
   createBlog,
   getBlogs,
+  getMyBlogs,
   getBlogById,
   updateBlog,
   deleteBlog,
@@ -16,6 +17,10 @@ const protect = require("../middleware/authMiddleware");
 
 // Create a blog
 router.post("/", protect, createBlog);
+
+// Get only the logged-in user's blogs
+// IMPORTANT: This must come before /:id
+router.get("/my", protect, getMyBlogs);
 
 // Get all blogs
 router.get("/", getBlogs);
