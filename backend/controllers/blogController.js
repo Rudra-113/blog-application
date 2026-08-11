@@ -1,9 +1,11 @@
 // controllers/blogController.js
-// Contains the logic for creating and fetching blogs
+// Contains the logic for creating, fetching, updating and deleting blogs
 
 const Blog = require("../models/Blog");
 
-// @route   POST /api/blogs   (protected - user must be logged in)
+// @route   POST /api/blogs
+// @desc    Create a new blog
+// @access  Protected
 const createBlog = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -32,7 +34,10 @@ const createBlog = async (req, res) => {
   }
 };
 
-// @route   GET /api/blogs   (public - anyone can view all blogs)
+
+// @route   GET /api/blogs
+// @desc    Get all blogs
+// @access  Public
 const getBlogs = async (req, res) => {
   try {
     const blogs = await Blog.find()
@@ -48,7 +53,10 @@ const getBlogs = async (req, res) => {
   }
 };
 
-// @route   GET /api/blogs/:id   (public - view one blog)
+
+// @route   GET /api/blogs/:id
+// @desc    Get one blog
+// @access  Public
 const getBlogById = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id)
@@ -69,8 +77,98 @@ const getBlogById = async (req, res) => {
   }
 };
 
+
+// @route   PUT /api/blogs/:id
+// @desc    Update a blog
+// @access  Protected
+const updateBlog = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+
+    // Find the blog
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+      });
+    }
+
+    // Only the blog owner can update it
+    if (String(blog.author) !== String(req.user.id)) {
+      return res.status(403).json({
+        message: "You can only update your own blogs.",
+      });
+    }
+
+    // Validate input
+    if (!title || !content) {
+      return res.status(400).json({
+        message: "Title and content are required.",
+      });
+    }
+
+    // Update blog
+    blog.title = title;
+    blog.content = content;
+
+    await blog.save();
+
+    res.status(200).json({
+      message: "Blog updated successfully",
+      blog,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+
+// @route   DELETE /api/blogs/:id
+// @desc    Delete a blog
+// @access  Protected
+const deleteBlog = async (req, res) => {
+  try {
+    // Find the blog
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({
+        message: "Blog not found",
+      });
+    }
+
+    // Only the blog owner can delete it
+    if (String(blog.author) !== String(req.user.id)) {
+      return res.status(403).json({
+        message: "You can only delete your own blogs.",
+      });
+    }
+
+    // Delete blog
+    await Blog.findByIdAndDelete(req.params.id);
+
+    res.status(200).json({
+      message: "Blog deleted successfully",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};
+
+
 module.exports = {
   createBlog,
   getBlogs,
   getBlogById,
+  updateBlog,
+  deleteBlog,
 };

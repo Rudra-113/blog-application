@@ -111,26 +111,78 @@ async function renderDashboardPosts(postList) {
       row.innerHTML =
         '<div>' +
           '<h3>' + title + '</h3>' +
+
           '<p class="post-meta">' +
             escapeHtml(date) +
           '</p>' +
+
           '<p class="post-excerpt">' +
             content.slice(0, 100) +
             (content.length > 100 ? '...' : '') +
           '</p>' +
 
-          '<a href="blog-details.html?id=' +
-            encodeURIComponent(post._id) +
-            '" class="btn">' +
-            'Read More' +
-          '</a>' +
+          '<div class="blog-actions">' +
+
+            '<a href="blog-details.html?id=' +
+              encodeURIComponent(post._id) +
+              '" class="btn">' +
+              'Read More' +
+            '</a>' +
+
+            '<a href="edit-blog.html?id=' +
+              encodeURIComponent(post._id) +
+              '" class="btn">' +
+              'Edit' +
+            '</a>' +
+
+            '<button class="btn delete-btn" data-id="' +
+              escapeHtml(post._id) +
+              '">' +
+              'Delete' +
+            '</button>' +
+
+          '</div>' +
 
         '</div>';
 
       postList.appendChild(row);
     });
 
+    // Add Delete button functionality
+    const deleteButtons = postList.querySelectorAll('.delete-btn');
+
+    deleteButtons.forEach(function (button) {
+
+      button.addEventListener('click', async function () {
+
+        const blogId = button.getAttribute('data-id');
+
+        const confirmed = confirm(
+          'Are you sure you want to delete this blog?'
+        );
+
+        if (!confirmed) return;
+
+        try {
+
+          await apiRequest('/blogs/' + blogId, {
+            method: 'DELETE'
+          });
+
+          alert('Blog deleted successfully.');
+
+          await renderDashboardPosts(postList);
+
+        } catch (error) {
+
+          alert(error.message);
+
+        }
+      });
+    });
+
   } catch (error) {
+
     postList.innerHTML =
       '<p class="empty-state">' +
       escapeHtml(error.message) +
