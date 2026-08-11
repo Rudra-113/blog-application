@@ -1,66 +1,83 @@
-# SimpleBlog – Blog Application
+# SimpleBlog - Full Stack Blog Application
 
-## Project Overview
-
-SimpleBlog is a simple full-stack blog application developed using HTML, CSS, JavaScript, Node.js, Express.js, and MongoDB.
-
-The application allows users to register, log in, and create blog posts.
+A full-stack blogging application built with HTML, CSS, JavaScript, Node.js, Express.js, MongoDB, and JWT authentication.
 
 ## Features
 
-- User Registration
-- User Login
-- JWT Authentication
-- Create Blog Posts
-- Display Blog Posts
-- Dashboard
-- MongoDB Database
-- REST API
-- Frontend and Backend Integration
+- User registration and login
+- JWT-based authentication
+- Protected dashboard
+- Create blog posts
+- View all blog posts
+- View individual blog posts
+- Update your own blog posts
+- Delete your own blog posts
+- User-specific dashboard
+- User profile
+- Logout functionality
+- Responsive mobile-friendly UI
+- REST API backend
+- MongoDB database integration
 
 ## Technologies Used
 
 ### Frontend
-- HTML
-- CSS
+- HTML5
+- CSS3
 - JavaScript
+- Responsive Design
 
 ### Backend
 - Node.js
 - Express.js
-- JWT
+- REST API
+- JWT Authentication
+- bcryptjs
+
+### Database
 - MongoDB
 - Mongoose
 
-## API Endpoints
-
-| Method | Endpoint | Purpose |
-|---|---|---|
-| POST | `/api/auth/register` | Register a user |
-| POST | `/api/auth/login` | Login user |
-| POST | `/api/blogs` | Create a blog |
-| GET | `/api/blogs` | Get blog posts |
+### Tools
+- Git
+- GitHub
+- VS Code
 
 ## Project Structure
 
 ```text
 blog-application/
+│
+├── backend/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── .env
+│   ├── package.json
+│   └── server.js
+│
 ├── frontend/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   ├── js/
+│   │   ├── auth.js
+│   │   ├── blog.js
+│   │   ├── blog-details.js
+│   │   ├── common.js
+│   │   ├── edit-blog.js
+│   │   ├── home.js
+│   │   └── profile.js
+│   │
 │   ├── index.html
 │   ├── login.html
 │   ├── register.html
 │   ├── dashboard.html
 │   ├── create-blog.html
-│   ├── css/
-│   └── js/
+│   ├── blog-details.html
+│   ├── edit-blog.html
+│   └── profile.html
 │
-├── backend/
-│   ├── server.js
-│   ├── package.json
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   └── routes/
-│
-└── .gitignore
+├── .gitignore
+└── README.md
